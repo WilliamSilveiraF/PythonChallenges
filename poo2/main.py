@@ -1,18 +1,24 @@
 import productList
 
-#A ideia inicial é fazer um caixa de supermercado com as funcionalidades:
-# - Inserção de Produtos
-# - Deleção de Produtos
-# - Recuperar produtos já deletados
-# - Calcular o valor de impostos
-# - Calcular o valor total
-# - Cada produto é dividido em ID, Preço, Quantidade e Imposto
-
 '''
-Nossa solução foi centralizada em uma classe de produtos, que quando chamada ela cria um carrinho para o
-usuário, possibilitando que ele adicione novos produtos, veja todos os produtos que estão em seu carrinho
-(preço, quantidade e impostos), e deletar produtos caso os queira mais. O programa calcula o valor total
-da compra levando em consideração os impostos sobre a compra daqueles produtos.
+A ideia principal é criar um sistema de supermercado, 
+onde o usuário pode realizar as seguintes ações:
+    - Inserir produtos
+    - Deletar produtos
+    - Limpar o carrinho
+    - Verificar quais produtos já foram adicionados
+    - Abrir checkout mostrando o valor total a ser pago pelo usuário
+
+A modelagem do código leva em consideração duas classes principais:
+    - Product
+        => Retorna um objeto que faz referência a um produto
+        => Props: id, price, amount, tax
+    - Cart
+        => Uma interface de ações sobre o carrinho do usuário
+        => Ações disponíveis: criar carrinho, adicionar produtos, deletar produtos, 
+            limpar carrinho, mostrar produtos adicionados e abrir checkout
+
+Assim, dado um lista de produtos .csv foi possível parsear os dados usando as classes citadas
 '''
 
 class Product(object):

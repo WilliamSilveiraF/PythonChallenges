@@ -70,13 +70,20 @@ def getScore(players, boardCards):
 
         sequenceMap = count_by_cardType(cards)
         for value in sequenceMap.values():
-            if value >= 3:
-                hasTwoPair = True
-            elif value >= 2:
+            if value >= 3 and not hasThreeOfAKind:
                 hasThreeOfAKind = True
+            elif value >= 2 and not hasTwoPair:
+                hasTwoPair = True
         return True if hasTwoPair and hasThreeOfAKind else False
 
-    finalBoard = [players.get('card1'), players.get('card2'), ]
+    def isFlush(cards):
+        for suit in suits:
+            filteredBySuit = filter_by_suit(suit, cards)
+            if len(filteredBySuit) >= 4:
+                return True
+        return False
+
+    finalBoard = [players.get('card1'), players.get('card2')]
     for idx in range(0, 5):
         finalBoard.append(boardCards[idx])
     
@@ -88,9 +95,8 @@ def getScore(players, boardCards):
         return 8
     elif isFullHouse(finalBoard):
         return 7
-    
-    print(finalBoard)
-    print(isFullHouse(finalBoard))
+    elif isFlush(finalBoard):
+        return 6
     return ''
 
 class Card:

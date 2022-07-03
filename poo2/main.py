@@ -64,6 +64,18 @@ def getScore(players, boardCards):
                 return True
         return False
 
+    def isFullHouse(cards):
+        hasTwoPair = False
+        hasThreeOfAKind = False
+
+        sequenceMap = count_by_cardType(cards)
+        for value in sequenceMap.values():
+            if value >= 3:
+                hasTwoPair = True
+            elif value >= 2:
+                hasThreeOfAKind = True
+        return True if hasTwoPair and hasThreeOfAKind else False
+
     finalBoard = [players.get('card1'), players.get('card2'), ]
     for idx in range(0, 5):
         finalBoard.append(boardCards[idx])
@@ -74,7 +86,11 @@ def getScore(players, boardCards):
         return 9
     elif isFourOfAKind(finalBoard):
         return 8
-    #print(isFullHouse(finalBoard))
+    elif isFullHouse(finalBoard):
+        return 7
+    
+    print(finalBoard)
+    print(isFullHouse(finalBoard))
     return ''
 
 class Card:

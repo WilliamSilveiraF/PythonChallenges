@@ -184,7 +184,16 @@ while True:
         for idx in range(playerAmt):
             players[idx] = cards.getCardPair()
 
+        scores = []
         for player in players:
             players[player]['score'] = getScore(players[player], cards.boardCards)
+            scores.append(players[player]['score'])
+        greater = max(scores)
+
+        if scores.count(greater) > 1:
+            print('There is a draw')
+        else:
+            print(f"The winner is the player {scores.index(greater) + 1}.")
+        print(scores)
     except Exception:
         break

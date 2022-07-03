@@ -3,6 +3,14 @@ import random
 
 suits = ['hearts', 'clubs', 'diamonds', 'spades']
 
+def count_by_cardType(cards):
+    sequenceMap = {'A': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0, '10': 0, 'J': 0, 'Q': 0, 'K': 0}
+    for card in cards:
+        cardType = card['cardType']
+        sequenceMap[cardType] += 1
+
+    return sequenceMap
+
 def filter_by_suit(suit, cards):
     withMySuit = []
     for card in cards:
@@ -40,7 +48,8 @@ def getScore(players, boardCards):
                 else:
                     ref = 0
                     break;
-        return False    
+        return False
+
     def isStraightFlush(cards):
         for suit in suits:
             filteredBySuit = filter_by_suit(suit, cards)
@@ -48,7 +57,13 @@ def getScore(players, boardCards):
                 return True
         return False
 
-        
+    def isFourOfAKind(cards):
+        sequenceMap = count_by_cardType(cards)
+        for value in sequenceMap.values():
+            if value == 4:
+                return True
+        return False
+
     finalBoard = [players.get('card1'), players.get('card2'), ]
     for idx in range(0, 5):
         finalBoard.append(boardCards[idx])
@@ -57,7 +72,9 @@ def getScore(players, boardCards):
         return 10
     elif isStraightFlush(finalBoard):
         return 9
-
+    elif isFourOfAKind(finalBoard):
+        return 8
+    #print(isFullHouse(finalBoard))
     return ''
 
 class Card:

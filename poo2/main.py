@@ -20,21 +20,6 @@ def filter_by_suit(suit, cards):
         withMySuit.append(card)
     return withMySuit
 
-def isStraight(cards):
-    sequenceMap = {'A': None, '2': None, '3': None, '4': None, '5': None, '6': None, '7': None, '8': None, '9': None, '10': None, 'J': None, 'Q': None, 'K': None}
-    for card in cards:
-        cardType = card['cardType']
-        sequenceMap[cardType] = True
-    ref = 0
-    for flag in sequenceMap.values():
-        if flag:
-            ref += 1
-            if ref == 5:
-                return True
-        else:
-            ref = 0
-    return False
-
 def getScore(players, boardCards):
     def isRoyalFlush(cards):
         ref = 0
@@ -48,6 +33,21 @@ def getScore(players, boardCards):
                 else:
                     ref = 0
                     break;
+        return False
+
+    def isStraight(cards):
+        sequenceMap = {'A': None, '2': None, '3': None, '4': None, '5': None, '6': None, '7': None, '8': None, '9': None, '10': None, 'J': None, 'Q': None, 'K': None}
+        for card in cards:
+            cardType = card['cardType']
+            sequenceMap[cardType] = True
+        ref = 0
+        for flag in sequenceMap.values():
+            if flag:
+                ref += 1
+                if ref == 5:
+                    return True
+            else:
+                ref = 0
         return False
 
     def isStraightFlush(cards):
@@ -79,25 +79,71 @@ def getScore(players, boardCards):
     def isFlush(cards):
         for suit in suits:
             filteredBySuit = filter_by_suit(suit, cards)
-            if len(filteredBySuit) >= 4:
+            if len(filteredBySuit) >= 5:
+                return True
+        return False
+    
+    def areThreeOfAKind(cards):
+        sequenceMap = count_by_cardType(cards)
+        hasThreeOfAKind = False
+        
+        for value in sequenceMap.values():
+            if value == 3:
+                hasThreeOfAKind = True
+                break
+        return hasThreeOfAKind
+
+    def areTwoPair(cards):
+        sequenceMap = count_by_cardType(cards)
+        pairs = 0
+
+        for value in sequenceMap.values():
+            if value == 2:
+                pairs += 1
+        return True if pairs >= 2 else False
+
+    def isOnePair(cards):
+        sequenceMap = count_by_cardType(cards)
+        for value in sequenceMap.values():
+            if value == 2:
                 return True
         return False
 
     finalBoard = [players.get('card1'), players.get('card2')]
     for idx in range(0, 5):
         finalBoard.append(boardCards[idx])
-    
+
+    print(finalBoard)
     if isRoyalFlush(finalBoard):
+        print("isRoyalFlush")
         return 10
     elif isStraightFlush(finalBoard):
+        print("isStraightFlush")
         return 9
     elif isFourOfAKind(finalBoard):
+        print("isFourOfAKind")
         return 8
     elif isFullHouse(finalBoard):
+        print("isFullHouse")
         return 7
     elif isFlush(finalBoard):
+        print("isFlush")
         return 6
-    return ''
+    elif isStraight(finalBoard):
+        print("isStraight")
+        return 5
+    elif areThreeOfAKind(finalBoard):
+        print("areThreeOfAKind")
+        return 4
+    elif areTwoPair(finalBoard):
+        print("areTwoPair")
+        return 3
+    elif isOnePair(finalBoard):
+        print("isOnePair")
+        return 2
+    else:
+        print("isHighCard")
+        return 1
 
 class Card:
     def __init__(self, suit, cardType):

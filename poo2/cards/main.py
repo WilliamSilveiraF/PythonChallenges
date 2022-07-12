@@ -1,4 +1,4 @@
-import cardList
+import poker.cardList as cardList
 import random
 
 class Card:

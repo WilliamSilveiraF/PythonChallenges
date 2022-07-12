@@ -191,7 +191,36 @@ while True:
         greater = max(scores)
 
         if scores.count(greater) > 1:
-            print('There is a draw')
+            tied = [i for i, x in enumerate(scores) if x == greater]
+            sequenceMap = {'A': [], '2': [], '3': [], '4': [], '5': [], '6': [], '7': [], '8': [], '9': [], '10': [], 'J': [], 'Q': [], 'K': []}
+            for player in tied:
+                cards = players[player]
+                card1 = cards.get('card1')['cardType']
+                card2 = cards.get('card2')['cardType']
+
+                if not player in sequenceMap[card1]:
+                    sequenceMap[card1].append(player)
+                if not player in sequenceMap[card2]:
+                    sequenceMap[card2].append(player)
+
+            sequenceMap = list(sequenceMap.values())
+            sequenceMap.reverse()
+            winnerIDs = []
+            print(sequenceMap)
+            for playersWhoHaveTheCard in sequenceMap:
+                print(playersWhoHaveTheCard)
+                if len(playersWhoHaveTheCard) == 0:
+                    continue
+                elif len(playersWhoHaveTheCard) >= 1:
+                    winnerIDs = playersWhoHaveTheCard
+                    break
+                if len(winnerIDs) > 0:
+                    break
+
+            if len(winnerIDs) > 1:
+                print(f"There is a draw between {str(winnerIDs)}")
+            else:
+                print(f"The winner is the player {winnerIDs[0] + 1}")
         else:
             print(f"The winner is the player {scores.index(greater) + 1}.")
         print(scores)
